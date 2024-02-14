@@ -17,10 +17,7 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      throw UnsupportedError(
-        'DefaultFirebaseOptions have not been configured for web - '
-        'you can reconfigure this by running the FlutterFire CLI again.',
-      );
+      return web;
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -28,10 +25,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for macos - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return macos;
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -49,20 +43,38 @@ class DefaultFirebaseOptions {
     }
   }
 
+  static const FirebaseOptions web = FirebaseOptions(
+    apiKey: 'AIzaSyAEOY9XrJj_tWqX3KH_p23I9M6D6qfVDn8',
+    appId: '1:145358866222:web:dd96827525b282f851dcbf',
+    messagingSenderId: '145358866222',
+    projectId: 'rick-and-morty-7b22e',
+    authDomain: 'rick-and-morty-7b22e.firebaseapp.com',
+    storageBucket: 'rick-and-morty-7b22e.appspot.com',
+  );
+
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAT0nNfKaAtAyo0AYTan6xkC3orHJ7BLSo',
-    appId: '1:769408265217:android:a83d90b0a0e79984b96400',
-    messagingSenderId: '769408265217',
-    projectId: 'rick-and-morty-7efd4',
-    storageBucket: 'rick-and-morty-7efd4.appspot.com',
+    apiKey: 'AIzaSyBSPIIKZraZVUq9kv8Ov62Y_feDY05JHlQ',
+    appId: '1:145358866222:android:3b62ad11723c246c51dcbf',
+    messagingSenderId: '145358866222',
+    projectId: 'rick-and-morty-7b22e',
+    storageBucket: 'rick-and-morty-7b22e.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAF2s1pBSgAN7D30w11nzIIum5YK_QsQ4U',
-    appId: '1:769408265217:ios:ba732053311746d8b96400',
-    messagingSenderId: '769408265217',
-    projectId: 'rick-and-morty-7efd4',
-    storageBucket: 'rick-and-morty-7efd4.appspot.com',
+    apiKey: 'AIzaSyDgAPxaMzTeTuucqHUy2qky5j6cujQVwBM',
+    appId: '1:145358866222:ios:9aaec20ba17b491b51dcbf',
+    messagingSenderId: '145358866222',
+    projectId: 'rick-and-morty-7b22e',
+    storageBucket: 'rick-and-morty-7b22e.appspot.com',
     iosBundleId: 'com.example.rickAndMorty',
+  );
+
+  static const FirebaseOptions macos = FirebaseOptions(
+    apiKey: 'AIzaSyDgAPxaMzTeTuucqHUy2qky5j6cujQVwBM',
+    appId: '1:145358866222:ios:d6939c976119d30751dcbf',
+    messagingSenderId: '145358866222',
+    projectId: 'rick-and-morty-7b22e',
+    storageBucket: 'rick-and-morty-7b22e.appspot.com',
+    iosBundleId: 'com.example.rickAndMorty.RunnerTests',
   );
 }

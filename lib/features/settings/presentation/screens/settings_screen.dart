@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -11,10 +12,11 @@ class SettingsScreen extends StatelessWidget {
       ),
       body: Center(
         child: ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
               Navigator.of(context).pushNamed('/login');
             },
-            child: Text("data")),
+            child: Text("Выход")),
       ),
     );
   }

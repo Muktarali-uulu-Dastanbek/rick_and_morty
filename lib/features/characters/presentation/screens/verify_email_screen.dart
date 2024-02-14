@@ -113,7 +113,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                         color: Colors.blue,
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

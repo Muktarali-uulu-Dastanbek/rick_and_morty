@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:rick_and_morty/features/characters/presentation/screens/auth_screen.dart';
+import 'package:rick_and_morty/internal/services/firebase_streem.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -14,10 +15,15 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    Timer(const Duration(seconds: 3), () {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const SplashScreen2()));
-    });
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
+
+    Timer(
+      const Duration(seconds: 3),
+      () {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const SplashScreen2()));
+      },
+    );
 
     super.initState();
   }
@@ -72,9 +78,16 @@ class _SplashScreen2State extends State<SplashScreen2> {
   void initState() {
     Timer(const Duration(seconds: 3), () {
       Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => const AuthorizationScreen()));
+          MaterialPageRoute(builder: (context) => const FirebaseStream()));
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: SystemUiOverlay.values);
   }
 
   @override

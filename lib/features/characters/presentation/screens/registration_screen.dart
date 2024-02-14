@@ -84,6 +84,7 @@ class _SignUpScreen extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title: const Text('Зарегистрироваться'),
       ),
