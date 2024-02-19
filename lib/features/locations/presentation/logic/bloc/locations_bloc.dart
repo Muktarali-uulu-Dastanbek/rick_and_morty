@@ -21,7 +21,7 @@ class LocationsBloc extends Bloc<LocationsEvent, LocationsState> {
         LocationsResult result = await locationsUseCase.getAllLocations();
         log("$result");
 
-        emit(LocationsLoadedState(locationsModel: result));
+        emit(LocationsLoadedState(locationsResult: result));
       } catch (e) {
         print('ошибка $e');
         emit(

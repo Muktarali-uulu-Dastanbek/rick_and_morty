@@ -1,9 +1,9 @@
 import 'dart:math';
 
-class LocationsResult {
+class EpisodsResult {
   final Info? info;
-  final List<LocationModel>? results;
-  static List<String> locationsImages = [
+  final List<EpisodModel>? results;
+  static List<String> episodsImages = [
     'assets/images/locations/location1.jpg',
     'assets/images/locations/location2.jpg',
     'assets/images/locations/location3.jpg',
@@ -12,18 +12,17 @@ class LocationsResult {
     'assets/images/locations/location6.jpg',
   ];
 
-  LocationsResult({
+  EpisodsResult({
     this.info,
     this.results,
   });
 
-  factory LocationsResult.fromJson(Map<String, dynamic> json) =>
-      LocationsResult(
+  factory EpisodsResult.fromJson(Map<String, dynamic> json) => EpisodsResult(
         info: json["info"] == null ? null : Info.fromJson(json["info"]),
         results: json["results"] == null
             ? []
-            : List<LocationModel>.from(json["results"]!.map((location) =>
-                LocationModel.fromJson(location, locationsImages))),
+            : List<EpisodModel>.from(json["results"]!
+                .map((episod) => EpisodModel.fromJson(episod, episodsImages))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -62,51 +61,53 @@ class Info {
       };
 }
 
-class LocationModel {
+class EpisodModel {
   final int? id;
   final String? name;
-  final String? type;
-  final String? dimension;
-  final List<String>? residents;
+  final String? airDate;
+  final String? episode;
+  final List<String>? characters;
   final String? url;
   final DateTime? created;
-  final String? locationImage;
+  final String? episodImage;
 
-  LocationModel({
-    this.locationImage,
+  EpisodModel({
+    this.episodImage,
     this.id,
     this.name,
-    this.type,
-    this.dimension,
-    this.residents,
+    this.airDate,
+    this.episode,
+    this.characters,
     this.url,
     this.created,
   });
 
-  factory LocationModel.fromJson(
-          Map<String, dynamic> json, List<String> locationsImages) =>
-      LocationModel(
+  factory EpisodModel.fromJson(
+    Map<String, dynamic> json,
+    List<String> episodsImages,
+  ) =>
+      EpisodModel(
         id: json["id"],
         name: json["name"],
-        type: json["type"],
-        dimension: json["dimension"],
-        residents: json["residents"] == null
+        airDate: json["air_date"],
+        episode: json["episode"],
+        characters: json["characters"] == null
             ? []
-            : List<String>.from(json["residents"]!.map((x) => x)),
+            : List<String>.from(json["characters"]!.map((x) => x)),
         url: json["url"],
         created:
             json["created"] == null ? null : DateTime.parse(json["created"]),
-        locationImage: locationsImages[Random().nextInt(6)],
+        episodImage: episodsImages[Random().nextInt(6)],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
-        "type": type,
-        "dimension": dimension,
-        "residents": residents == null
+        "air_date": airDate,
+        "episode": episode,
+        "characters": characters == null
             ? []
-            : List<dynamic>.from(residents!.map((x) => x)),
+            : List<dynamic>.from(characters!.map((x) => x)),
         "url": url,
         "created": created?.toIso8601String(),
       };

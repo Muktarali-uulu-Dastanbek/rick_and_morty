@@ -2,14 +2,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+class AccountScreen extends StatefulWidget {
+  const AccountScreen({Key? key}) : super(key: key);
 
   @override
-  State<HomeScreen> createState() => _AccountScreenState();
+  State<AccountScreen> createState() => _AccountScreenState();
 }
 
-class _AccountScreenState extends State<HomeScreen> {
+class _AccountScreenState extends State<AccountScreen> {
   final user = FirebaseAuth.instance.currentUser;
 
   Future<void> signOut() async {
@@ -17,8 +17,7 @@ class _AccountScreenState extends State<HomeScreen> {
 
     await FirebaseAuth.instance.signOut();
 
-    navigator.pushNamedAndRemoveUntil(
-        '/login', (Route<dynamic> route) => false);
+    navigator.pushNamed('/login');
   }
 
   @override
@@ -35,13 +34,6 @@ class _AccountScreenState extends State<HomeScreen> {
           ),
         ),
         title: const Text('Аккаунт'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            tooltip: 'Open shopping cart',
-            onPressed: () => signOut(),
-          ),
-        ],
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -57,7 +49,6 @@ class _AccountScreenState extends State<HomeScreen> {
               ),
             ],
           ),
-          
         ],
       ),
     );

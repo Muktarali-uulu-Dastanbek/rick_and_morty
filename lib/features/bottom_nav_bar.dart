@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rick_and_morty/features/characters/presentation/screens/characters_screen.dart';
-import 'package:rick_and_morty/features/episods/presentation/screens/episodes_screen.dart';
-import 'package:rick_and_morty/features/locations/presentation/screens/location_screen.dart';
+import 'package:rick_and_morty/features/episods/presentation/screens/episods_screen.dart';
+import 'package:rick_and_morty/features/locations/presentation/screens/locations_screen.dart';
 import 'package:rick_and_morty/features/settings/presentation/screens/settings_screen.dart';
 
 class BottomNavBarScreen extends StatefulWidget {
@@ -23,9 +23,9 @@ class _BottomNavBarState extends State<BottomNavBarScreen> {
     //персонажи
     CharactersScreen(),
     //локация
-    LocationScreen(),
+    LocationsScreen(),
     //Эпизоды
-    EpisodesScreen(),
+    EpisodsScreen(),
     //настройки
     SettingsScreen(),
   ];

@@ -37,27 +37,31 @@ abstract class TextHelper {
     fontSize: 14,
     color: ThemeColor.hintTextCl,
   );
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
 
-  static TextStyle s24w700 = TextStyle(
-    fontSize: 24,
+  static TextStyle s24w600 = TextStyle(
+    fontSize: 24.sp,
     fontWeight: FontWeight.w700,
     color: ThemeColor.colorText,
   );
 
   static TextStyle s14w500 = TextStyle(
-    fontSize: 14,
+    fontSize: 14.sp,
     fontWeight: FontWeight.w500,
     color: ThemeColor.colorText,
   );
 
   static TextStyle s13w400 = TextStyle(
-    fontSize: 12,
+    fontSize: 12.sp,
     fontWeight: FontWeight.w400,
     color: ThemeColor.colorText,
   );
 
   static TextStyle s12w400 = TextStyle(
-    fontSize: 12,
+    fontSize: 12.sp,
     fontWeight: FontWeight.w400,
     color: ThemeColor.hintTextCl,
   );

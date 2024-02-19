@@ -40,7 +40,8 @@ class _SplashScreenState extends State<SplashScreen> {
             decoration: const BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.contain,
-                image: AssetImage('assets/images/Rick_and_Morty.png'),
+                image: AssetImage(
+                    'assets/images/splash_screen/Rick_and_Morty.png'),
               ),
             ),
           ),
@@ -48,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
             height: 200.h,
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("assets/images/chel.png"),
+                image: AssetImage("assets/images/splash_screen/chel.png"),
               ),
             ),
           ),
@@ -56,7 +57,7 @@ class _SplashScreenState extends State<SplashScreen> {
             height: 199.h,
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("assets/images/proff.png"),
+                image: AssetImage("assets/images/splash_screen/proff.png"),
               ),
             ),
           ),
@@ -102,7 +103,8 @@ class _SplashScreen2State extends State<SplashScreen2> {
             decoration: const BoxDecoration(
               image: DecorationImage(
                 fit: BoxFit.contain,
-                image: AssetImage('assets/images/Rick_and_Morty.png'),
+                image: AssetImage(
+                    'assets/images/splash_screen/Rick_and_Morty.png'),
               ),
             ),
           ),
@@ -110,7 +112,7 @@ class _SplashScreen2State extends State<SplashScreen2> {
             height: 327.h,
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("assets/images/professor.png"),
+                image: AssetImage("assets/images/splash_screen/professor.png"),
               ),
             ),
           ),

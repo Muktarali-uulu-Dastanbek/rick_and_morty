@@ -3,7 +3,7 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:rick_and_morty/features/characters/presentation/screens/bottom_nav_bar.dart';
+import 'package:rick_and_morty/features/bottom_nav_bar.dart';
 import 'package:rick_and_morty/internal/helpers/catch_exception.dart';
 
 class VerifyEmailScreen extends StatefulWidget {

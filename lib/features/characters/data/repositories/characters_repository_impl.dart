@@ -8,7 +8,7 @@ import 'package:rick_and_morty/internal/helpers/api_requester.dart';
 import 'package:rick_and_morty/internal/helpers/catch_exception.dart';
 
 @Injectable(as: CharactersRepository)
-class UserRepositoriImpl implements CharactersRepository {
+class CharactersRepositoryImpl implements CharactersRepository {
   ApiRequester apiRequester = ApiRequester();
 
   @override

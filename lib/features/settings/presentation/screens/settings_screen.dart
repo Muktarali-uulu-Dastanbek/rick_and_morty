@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -8,15 +7,20 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("SettingsScreen"),
+        title: Text("Настройки"),
       ),
-      body: Center(
-        child: ElevatedButton(
+      body: Column(
+        children: [
+          ElevatedButton(
             onPressed: () async {
-              await FirebaseAuth.instance.signOut();
-              Navigator.of(context).pushNamed('/login');
+              Navigator.of(context).pushNamed('/account_screen');
             },
-            child: Text("Выход")),
+            child: Text("Редактировать"),
+          ),
+          Center(
+            child: Text("Settings Screen"),
+          ),
+        ],
       ),
     );
   }

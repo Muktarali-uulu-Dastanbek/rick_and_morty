@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:rick_and_morty/features/characters/presentation/screens/verify_email_screen.dart';
+import 'package:rick_and_morty/features/authorization/presentation/screens/verify_email_screen.dart';
 import 'package:rick_and_morty/features/characters/presentation/widget/email_input_widget.dart';
 import 'package:rick_and_morty/internal/helpers/catch_exception.dart';
 import 'package:rick_and_morty/internal/helpers/text_helper.dart';
@@ -48,8 +48,8 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
 
       if (FirebaseAuth.instance.currentUser != null) {
         if (!FirebaseAuth.instance.currentUser!.emailVerified) {
-          navigator.push(
-              MaterialPageRoute(builder: (context) => const VerifyEmailScreen()));
+          navigator.push(MaterialPageRoute(
+              builder: (context) => const VerifyEmailScreen()));
         } else {
           navigator.pushNamedAndRemoveUntil(
               '/bottom_nav_bar', (Route<dynamic> route) => false);

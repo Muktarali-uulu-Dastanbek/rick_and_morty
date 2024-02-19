@@ -9,9 +9,9 @@ final class LocationsInitialState extends LocationsState {}
 class LocationsLoadingState extends LocationsState {}
 
 class LocationsLoadedState extends LocationsState {
-  final LocationsResult locationsModel;
+  final LocationsResult locationsResult;
 
-  LocationsLoadedState({required this.locationsModel});
+  LocationsLoadedState({required this.locationsResult});
 }
 
 class LocationsErrorState extends LocationsState {

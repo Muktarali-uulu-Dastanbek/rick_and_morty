@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:rick_and_morty/features/characters/presentation/screens/auth_screen.dart';
-import 'package:rick_and_morty/features/characters/presentation/screens/bottom_nav_bar.dart';
-import 'package:rick_and_morty/features/characters/presentation/screens/verify_email_screen.dart';
+import 'package:rick_and_morty/features/authorization/presentation/screens/auth_screen.dart';
+import 'package:rick_and_morty/features/authorization/presentation/screens/verify_email_screen.dart';
+import 'package:rick_and_morty/features/bottom_nav_bar.dart';
 
 class FirebaseStream extends StatelessWidget {
   const FirebaseStream({super.key});

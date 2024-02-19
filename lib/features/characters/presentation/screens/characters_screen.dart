@@ -21,7 +21,7 @@ class _CharactersScreenState extends State<CharactersScreen> {
   late ScrollController _scrollController;
   bool isLoading = false;
   int currentPage = 1;
-  List<CharacterResult> charactersList = [];
+  List<CharacterModel> charactersList = [];
 
   @override
   void initState() {
@@ -97,7 +97,7 @@ class _CharactersScreenState extends State<CharactersScreen> {
               bloc: charactersBloc,
               listener: (context, state) {
                 if (state is CharactersLoadedState) {
-                  charactersList.addAll(state.characterModel.results ?? []);
+                  charactersList.addAll(state.charactersResult.results ?? []);
 
                   isLoading = false;
                 }
@@ -119,7 +119,7 @@ class _CharactersScreenState extends State<CharactersScreen> {
                           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                                "ВСЕГО ПЕРСОНАЖЕЙ: ${state.characterModel.info?.count}"),
+                                "ВСЕГО ПЕРСОНАЖЕЙ: ${state.charactersResult.info?.count}"),
                             Spacer(),
                             IconButton(
                               icon: Icon(
@@ -153,7 +153,7 @@ class _CharactersScreenState extends State<CharactersScreen> {
                                           8.0, // Расстояние между строками
                                     ),
                                     itemCount:
-                                        state.characterModel.results!.length,
+                                        state.charactersResult.results!.length,
                                     itemBuilder: (context, index) {
                                       return InkWell(
                                         onTap: () {
@@ -175,7 +175,7 @@ class _CharactersScreenState extends State<CharactersScreen> {
                                                 ),
                                                 child: ClipOval(
                                                   child: Image.network(
-                                                    "${state.characterModel.results![index].image}",
+                                                    "${state.charactersResult.results![index].image}",
                                                     fit: BoxFit.fill,
                                                   ),
                                                 ),
@@ -183,26 +183,26 @@ class _CharactersScreenState extends State<CharactersScreen> {
                                               SizedBox(height: 18.h),
                                               Text(
                                                 statusConverter(state
-                                                    .characterModel
+                                                    .charactersResult
                                                     .results![index]
                                                     .status),
                                                 style: TextStyle(
                                                   color: statusColorConverter(
                                                       state
-                                                          .characterModel
+                                                          .charactersResult
                                                           .results![index]
                                                           .status),
                                                   fontWeight: FontWeight.w500,
                                                 ),
                                               ),
                                               Text(
-                                                "${state.characterModel.results![index].name}",
+                                                "${state.charactersResult.results![index].name}",
                                                 style: TextHelper.s14w500,
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                               Text(
-                                                "${state.characterModel.results![index].species.toString().split('.')[1]}, ${state.characterModel.results![index].gender.toString().split('.')[1]}",
+                                                "${state.charactersResult.results![index].species.toString().split('.')[1]}, ${state.charactersResult.results![index].gender.toString().split('.')[1]}",
                                                 style: TextHelper.s12w400,
                                               ),
                                             ],
@@ -221,8 +221,12 @@ class _CharactersScreenState extends State<CharactersScreen> {
                                       }
                                       return InkWell(
                                         onTap: () {
-                                          Navigator.of(context)
-                                              .pushNamed('/character_info');
+                                          Navigator.pushNamed(
+                                            context,
+                                            '/character_info',
+                                            arguments: state.charactersResult
+                                                .results?[index],
+                                          );
                                         },
                                         child: Container(
                                           margin: const EdgeInsets.symmetric(

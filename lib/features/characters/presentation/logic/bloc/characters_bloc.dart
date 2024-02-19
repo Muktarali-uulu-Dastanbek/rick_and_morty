@@ -27,7 +27,7 @@ class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
             await userUseCase.getAllCharacters(event.currentPage);
         log("$result");
 
-        emit(CharactersLoadedState(characterModel: result));
+        emit(CharactersLoadedState(charactersResult: result));
       } catch (e) {
         print('ошибка $e');
         emit(
