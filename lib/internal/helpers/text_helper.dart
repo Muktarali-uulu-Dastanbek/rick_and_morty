@@ -48,6 +48,12 @@ abstract class TextHelper {
     color: ThemeColor.colorText,
   );
 
+  static TextStyle s18w600 = TextStyle(
+    fontSize: 20.sp,
+    fontWeight: FontWeight.w700,
+    color: ThemeColor.colorText,
+  );
+
   static TextStyle s14w500 = TextStyle(
     fontSize: 14.sp,
     fontWeight: FontWeight.w500,

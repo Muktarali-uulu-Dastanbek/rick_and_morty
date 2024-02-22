@@ -84,7 +84,7 @@ class EpisodModel {
 
   factory EpisodModel.fromJson(
     Map<String, dynamic> json,
-    List<String> episodsImages,
+    List<String>? episodsImages,
   ) =>
       EpisodModel(
         id: json["id"],
@@ -97,7 +97,11 @@ class EpisodModel {
         url: json["url"],
         created:
             json["created"] == null ? null : DateTime.parse(json["created"]),
-        episodImage: episodsImages[Random().nextInt(6)],
+        // episodImage: episodsImages![Random().nextInt(6)],
+        //easyloading
+        //smart dialogshow
+        //flutter overlay loading
+        //flutter
       );
 
   Map<String, dynamic> toJson() => {

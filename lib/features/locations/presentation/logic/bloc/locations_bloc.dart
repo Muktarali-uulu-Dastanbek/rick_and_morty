@@ -16,9 +16,12 @@ class LocationsBloc extends Bloc<LocationsEvent, LocationsState> {
   LocationsBloc(this.locationsUseCase) : super(LocationsInitialState()) {
     on<GetAllLocations>((event, emit) async {
       try {
-        emit(LocationsLoadingState());
+        if (event.isFirstCall) {
+          emit(LocationsLoadingState());
+        }
 
-        LocationsResult result = await locationsUseCase.getAllLocations();
+        LocationsResult result =
+            await locationsUseCase.getAllLocations(event.currentPage);
         log("$result");
 
         emit(LocationsLoadedState(locationsResult: result));

@@ -5,5 +5,5 @@ abstract class LocationsRepository {
   ///
   ///EN:getting the information of all locations
 
-  Future<LocationsResult> getAllLocations();
+  Future<LocationsResult> getAllLocations(int page);
 }

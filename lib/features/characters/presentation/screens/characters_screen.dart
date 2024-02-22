@@ -19,9 +19,11 @@ class CharactersScreen extends StatefulWidget {
 class _CharactersScreenState extends State<CharactersScreen> {
   CharactersBloc charactersBloc = getIt<CharactersBloc>();
   late ScrollController _scrollController;
+
   bool isLoading = false;
   int currentPage = 1;
   List<CharacterModel> charactersList = [];
+  bool _theEnd = false;
 
   @override
   void initState() {
@@ -42,7 +44,7 @@ class _CharactersScreenState extends State<CharactersScreen> {
       if (_scrollController.offset >=
               _scrollController.position.maxScrollExtent &&
           !_scrollController.position.outOfRange) {
-        isLoading = true;
+        // isLoading = true;
 
         if (isLoading) {
           currentPage = currentPage + 1;
@@ -98,8 +100,15 @@ class _CharactersScreenState extends State<CharactersScreen> {
               listener: (context, state) {
                 if (state is CharactersLoadedState) {
                   charactersList.addAll(state.charactersResult.results ?? []);
-
-                  isLoading = false;
+                  if (charactersList.length <
+                      state.charactersResult.info!.count!) {
+                    isLoading = true;
+                  } else {
+                    isLoading = false;
+                    setState(() {
+                      _theEnd = true;
+                    });
+                  }
                 }
                 if (state is CharactersErrorState) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -108,7 +117,7 @@ class _CharactersScreenState extends State<CharactersScreen> {
               },
               builder: (context, state) {
                 if (state is CharactersLoadingState) {
-                  return const CircularProgressIndicator();
+                  return const CustomSpinner();
                 }
 
                 if (state is CharactersLoadedState) {
@@ -120,7 +129,7 @@ class _CharactersScreenState extends State<CharactersScreen> {
                           children: [
                             Text(
                                 "ВСЕГО ПЕРСОНАЖЕЙ: ${state.charactersResult.info?.count}"),
-                            Spacer(),
+                            const Spacer(),
                             IconButton(
                               icon: Icon(
                                 !isGrid
@@ -140,10 +149,11 @@ class _CharactersScreenState extends State<CharactersScreen> {
                         ),
                         SizedBox(height: 20.h),
                         Expanded(
-                          child: Container(
+                          child: SizedBox(
                             width: double.infinity,
                             child: isGrid
                                 ? GridView.builder(
+                                    controller: _scrollController,
                                     gridDelegate:
                                         const SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 2, // Количество столбцов
@@ -152,13 +162,20 @@ class _CharactersScreenState extends State<CharactersScreen> {
                                       mainAxisSpacing:
                                           8.0, // Расстояние между строками
                                     ),
-                                    itemCount:
-                                        state.charactersResult.results!.length,
+                                    itemCount: charactersList.length,
                                     itemBuilder: (context, index) {
+                                      if (index >= charactersList.length - 1 &&
+                                          !_theEnd) {
+                                        return const CustomSpinner();
+                                      }
                                       return InkWell(
                                         onTap: () {
-                                          Navigator.of(context)
-                                              .pushNamed('/character_info');
+                                          Navigator.pushNamed(
+                                            context,
+                                            '/character_info',
+                                            arguments: state.charactersResult
+                                                .results?[index],
+                                          );
                                         },
                                         child: Container(
                                           // color: Colors.grey[300],
@@ -175,34 +192,31 @@ class _CharactersScreenState extends State<CharactersScreen> {
                                                 ),
                                                 child: ClipOval(
                                                   child: Image.network(
-                                                    "${state.charactersResult.results![index].image}",
+                                                    "${charactersList[index].image}",
                                                     fit: BoxFit.fill,
                                                   ),
                                                 ),
                                               ),
                                               SizedBox(height: 18.h),
                                               Text(
-                                                statusConverter(state
-                                                    .charactersResult
-                                                    .results![index]
-                                                    .status),
+                                                statusConverter(
+                                                    charactersList[index]
+                                                        .status),
                                                 style: TextStyle(
                                                   color: statusColorConverter(
-                                                      state
-                                                          .charactersResult
-                                                          .results![index]
+                                                      charactersList[index]
                                                           .status),
                                                   fontWeight: FontWeight.w500,
                                                 ),
                                               ),
                                               Text(
-                                                "${state.charactersResult.results![index].name}",
+                                                "${charactersList[index].name}",
                                                 style: TextHelper.s14w500,
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                               Text(
-                                                "${state.charactersResult.results![index].species.toString().split('.')[1]}, ${state.charactersResult.results![index].gender.toString().split('.')[1]}",
+                                                "${charactersList[index].species.toString().split('.')[1]}, ${charactersList[index].gender.toString().split('.')[1]}",
                                                 style: TextHelper.s12w400,
                                               ),
                                             ],
@@ -216,7 +230,8 @@ class _CharactersScreenState extends State<CharactersScreen> {
                                     padding: EdgeInsets.zero,
                                     itemCount: charactersList.length,
                                     itemBuilder: (context, index) {
-                                      if (index >= charactersList.length - 1) {
+                                      if (index >= charactersList.length - 1 &&
+                                          !_theEnd) {
                                         return const CustomSpinner();
                                       }
                                       return InkWell(

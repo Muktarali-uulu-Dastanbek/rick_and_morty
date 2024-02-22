@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
 import 'package:rick_and_morty/features/characters/data/models/characters_model.dart';
 import 'package:rick_and_morty/features/characters/domain/repositories/characters_repository.dart';
+import 'package:rick_and_morty/features/episods/data/models/episods_model.dart';
 
 import 'package:rick_and_morty/internal/helpers/api_requester.dart';
 import 'package:rick_and_morty/internal/helpers/catch_exception.dart';
@@ -39,6 +40,25 @@ class CharactersRepositoryImpl implements CharactersRepository {
       throw response;
     } catch (e) {
       // ignore: avoid_print
+      print('impl ======= $e');
+
+      throw CatchException.convertException(e);
+    }
+  }
+
+  @override
+  Future<EpisodModel> getEpisod(String url) async {
+    try {
+      Response response = await apiRequester.toGet(url);
+      if (response.statusCode == 200) {
+        log("${response.statusCode}");
+        log("EPISODES result== ${response.data}");
+
+        return EpisodModel.fromJson(response.data, null);
+      }
+
+      throw response;
+    } catch (e) {
       print('impl ======= $e');
 
       throw CatchException.convertException(e);

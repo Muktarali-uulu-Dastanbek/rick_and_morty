@@ -1,8 +1,8 @@
-import 'dart:math';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rick_and_morty/features/locations/data/models/locations.model.dart';
 import 'package:rick_and_morty/features/locations/presentation/logic/bloc/locations_bloc.dart';
 import 'package:rick_and_morty/internal/dependensies/get_it.dart';
 import 'package:rick_and_morty/internal/helpers/text_helper.dart';
@@ -17,11 +17,45 @@ class LocationsScreen extends StatefulWidget {
 
 class _LocationsScreenState extends State<LocationsScreen> {
   LocationsBloc locationsBloc = getIt<LocationsBloc>();
+  late ScrollController _scrollController;
+  bool isLoading = false;
+  int currentPage = 1;
+  List<LocationModel> locationsList = [];
+  bool _theEnd = false;
 
   @override
   void initState() {
-    locationsBloc.add(GetAllLocations());
+    locationsBloc.add(
+      GetAllLocations(
+        currentPage: currentPage,
+        isFirstCall: true,
+      ),
+    );
+    _scrollController = ScrollController(initialScrollOffset: 5.0)
+      ..addListener(_scrollListener);
+
     super.initState();
+  }
+
+  _scrollListener() {
+    if (locationsList.isNotEmpty) {
+      if (_scrollController.offset >=
+              _scrollController.position.maxScrollExtent &&
+          !_scrollController.position.outOfRange) {
+        // isLoading = true;
+
+        if (isLoading) {
+          currentPage = currentPage + 1;
+
+          locationsBloc.add(
+            GetAllLocations(
+              currentPage: currentPage,
+              isFirstCall: false,
+            ),
+          );
+        }
+      }
+    }
   }
 
   @override
@@ -60,6 +94,18 @@ class _LocationsScreenState extends State<LocationsScreen> {
             BlocConsumer<LocationsBloc, LocationsState>(
               bloc: locationsBloc,
               listener: (context, state) {
+                if (state is LocationsLoadedState) {
+                  locationsList.addAll(state.locationsResult.results ?? []);
+                  if (locationsList.length <
+                      state.locationsResult.info!.count!) {
+                    isLoading = true;
+                  } else {
+                    isLoading = false;
+                    setState(() {
+                      _theEnd = true;
+                    });
+                  }
+                }
                 if (state is LocationsErrorState) {
                   ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text(state.error.message.toString())));
@@ -67,7 +113,7 @@ class _LocationsScreenState extends State<LocationsScreen> {
               },
               builder: (context, state) {
                 if (state is LocationsLoadingState) {
-                  return const CircularProgressIndicator();
+                  return const CustomSpinner();
                 }
 
                 if (state is LocationsLoadedState) {
@@ -87,13 +133,22 @@ class _LocationsScreenState extends State<LocationsScreen> {
                           child: Container(
                             width: double.infinity,
                             child: ListView.builder(
+                              controller: _scrollController,
                               padding: EdgeInsets.zero,
-                              itemCount: state.locationsResult.results!.length,
+                              itemCount: locationsList.length,
                               itemBuilder: (context, index) {
+                                if (index >= locationsList.length - 1 &&
+                                    !_theEnd) {
+                                  return const CustomSpinner();
+                                }
                                 return InkWell(
                                   onTap: () {
-                                    Navigator.of(context)
-                                        .pushNamed('/location_info');
+                                    Navigator.pushNamed(
+                                      context,
+                                      '/location_info',
+                                      arguments:
+                                          state.locationsResult.results?[index],
+                                    );
                                   },
                                   child: Container(
                                     margin: EdgeInsets.all(5.r),
@@ -120,7 +175,7 @@ class _LocationsScreenState extends State<LocationsScreen> {
                                               topRight: Radius.circular(10.r),
                                             ),
                                             child: Image.asset(
-                                              "${state.locationsResult.results?[index].locationImage}",
+                                              "${locationsList[index].locationImage}",
                                               fit: BoxFit.fill,
                                             ),
                                           ),
@@ -146,14 +201,14 @@ class _LocationsScreenState extends State<LocationsScreen> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  "${state.locationsResult.results![index].name}",
+                                                  "${locationsList[index].name}",
                                                   style: TextHelper.s24w600,
                                                   maxLines: 1,
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                 ),
                                                 Text(
-                                                  "${state.locationsResult.results![index].type} - ${state.locationsResult.results![index].dimension}",
+                                                  "${locationsList[index].type} - ${locationsList[index].dimension}",
                                                   style: TextHelper.s12w400,
                                                 ),
                                               ],
@@ -177,6 +232,25 @@ class _LocationsScreenState extends State<LocationsScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class CustomSpinner extends StatelessWidget {
+  const CustomSpinner({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 5.h),
+      child:
+          // Platform.isAndroid
+          //     ? const CircularProgressIndicator()
+          //     :
+          CupertinoActivityIndicator(
+        radius: 15.r,
+        color: Colors.grey,
       ),
     );
   }

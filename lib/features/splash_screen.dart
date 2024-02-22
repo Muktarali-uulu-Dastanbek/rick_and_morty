@@ -18,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
 
     Timer(
-      const Duration(seconds: 3),
+      const Duration(seconds: 2),
       () {
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => const SplashScreen2()));
@@ -77,7 +77,7 @@ class SplashScreen2 extends StatefulWidget {
 class _SplashScreen2State extends State<SplashScreen2> {
   @override
   void initState() {
-    Timer(const Duration(seconds: 3), () {
+    Timer(const Duration(seconds: 2), () {
       Navigator.pushReplacement(context,
           MaterialPageRoute(builder: (context) => const FirebaseStream()));
     });

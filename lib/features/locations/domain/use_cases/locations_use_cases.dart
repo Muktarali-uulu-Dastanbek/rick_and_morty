@@ -9,7 +9,6 @@ class LocationsUseCase {
 
   LocationsUseCase({required this.locationsRepository});
 
-  Future<LocationsResult> getAllLocations() async {
-    return await locationsRepository.getAllLocations();
-  }
+  Future<LocationsResult> getAllLocations(int page) async =>
+      await locationsRepository.getAllLocations(page);
 }

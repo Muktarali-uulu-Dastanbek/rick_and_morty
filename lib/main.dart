@@ -7,6 +7,7 @@ import 'package:rick_and_morty/features/authorization/presentation/screens/verif
 import 'package:rick_and_morty/features/bottom_nav_bar.dart';
 import 'package:rick_and_morty/features/characters/data/models/characters_model.dart';
 import 'package:rick_and_morty/features/characters/presentation/screens/character_info_screen.dart';
+import 'package:rick_and_morty/features/locations/data/models/locations.model.dart';
 import 'package:rick_and_morty/features/locations/presentation/screens/location_info_screen.dart';
 import 'package:rick_and_morty/features/settings/presentation/screens/account_screen.dart';
 import 'package:rick_and_morty/features/settings/presentation/screens/reset_password_screen.dart';
@@ -63,7 +64,10 @@ class MyApp extends StatelessWidget {
             '/bottom_nav_bar': (context) => const BottomNavBarScreen(),
             '/firebase': (context) => const FirebaseStream(),
             '/settings': (context) => const SettingsScreen(),
-            '/location_info': (context) => const LocationInfoScreen(),
+            '/location_info': (context) => LocationInfoScreen(
+                  locationModel: ModalRoute.of(context)?.settings.arguments
+                      as LocationModel,
+                ),
             '/character_info': (context) => CharacterInfoScreen(
                   characterModel: ModalRoute.of(context)?.settings.arguments
                       as CharacterModel,
