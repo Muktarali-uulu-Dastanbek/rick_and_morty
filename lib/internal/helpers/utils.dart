@@ -23,6 +23,32 @@ Color statusColorConverter(Status? status) {
       return Colors.red;
 
     default:
-      return Colors.black;
+      return Colors.grey;
+  }
+}
+
+String speciesConverter(Species? species) {
+  switch (species) {
+    case Species.HUMAN:
+      return 'Человек';
+
+    case Species.ALIEN:
+      return 'Инопланетянин';
+
+    default:
+      return 'Неизвестно';
+  }
+}
+
+String genderConverter(Gender? gender) {
+  switch (gender) {
+    case Gender.MALE:
+      return 'Мужской';
+
+    case Gender.FEMALE:
+      return 'Женский';
+
+    default:
+      return 'Неизвестно';
   }
 }

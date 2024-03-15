@@ -19,3 +19,17 @@ class EpisodsErrorState extends EpisodsState {
 
   EpisodsErrorState({required this.error});
 }
+
+class EpisodInfoLoadingState extends EpisodsState {}
+
+class EpisodInfoLoadedState extends EpisodsState {
+  final List<CharacterModel> characters;
+
+  EpisodInfoLoadedState({required this.characters});
+}
+
+class EpisodInfoErrorState extends EpisodsState {
+  final CatchException error;
+
+  EpisodInfoErrorState({required this.error});
+}

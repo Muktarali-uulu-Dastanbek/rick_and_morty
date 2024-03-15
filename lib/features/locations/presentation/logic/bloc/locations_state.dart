@@ -19,3 +19,17 @@ class LocationsErrorState extends LocationsState {
 
   LocationsErrorState({required this.error});
 }
+
+class LocationInfoLoadingState extends LocationsState {}
+
+class LocationInfoLoadedState extends LocationsState {
+  final List<CharacterModel> characters;
+
+  LocationInfoLoadedState({required this.characters});
+}
+
+class LocationInfoErrorState extends LocationsState {
+  final CatchException error;
+
+  LocationInfoErrorState({required this.error});
+}

@@ -15,13 +15,15 @@ class ApiRequester {
     );
   }
 
-  Future<Response> toGet(String url, {Map<String, dynamic>? params}) async {
+  Future<Response> toGet(String url,
+      {Map<String, dynamic>? params, CancelToken? cancelToken}) async {
     Dio dio = await initDio();
 
     try {
       return dio.get(
         url,
         queryParameters: params,
+        cancelToken: cancelToken,
       );
     } catch (e) {
       throw CatchException.convertException(e);

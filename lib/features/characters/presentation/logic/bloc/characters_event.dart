@@ -7,15 +7,21 @@ sealed class CharactersEvent {}
 class GetAllCharacters extends CharactersEvent {
   final int currentPage;
   final bool isFirstCall;
+  final CancelToken? cancelToken;
 
   GetAllCharacters({
     required this.currentPage,
     this.isFirstCall = false,
+    this.cancelToken,
   });
 }
 
-class GetAllEpisodsInCharInfo extends CharactersEvent {
-  final List<String> episode;
+class GetAllEpisodsCharecterInfo extends CharactersEvent {
+  final List<String> episods;
+  final CancelToken? cancelToken;
 
-  GetAllEpisodsInCharInfo({required this.episode});
+  GetAllEpisodsCharecterInfo({
+    required this.episods,
+    this.cancelToken,
+  });
 }

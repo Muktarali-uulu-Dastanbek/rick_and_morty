@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:rick_and_morty/features/characters/data/models/characters_model.dart';
 import 'package:rick_and_morty/features/episods/data/models/episods_model.dart';
 
@@ -6,7 +7,13 @@ abstract class CharactersRepository {
   ///
   ///EN:getting the information of all users
 
-  Future<CharactersResult> getAllCharacters(int page);
+  Future<CharactersResult> getAllCharacters(
+    int page,
+    CancelToken? cancelToken,
+  );
 
-  Future<EpisodModel> getEpisod(String url);
+  Future<EpisodModel> getEpisod(
+    String url,
+    CancelToken? cancelToken,
+  );
 }

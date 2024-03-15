@@ -3,6 +3,7 @@
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:injectable/injectable.dart';
 import 'package:meta/meta.dart';
@@ -24,8 +25,10 @@ class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
           emit(CharactersLoadingState());
         }
 
-        CharactersResult result =
-            await charactersUseCase.getAllCharacters(event.currentPage);
+        CharactersResult result = await charactersUseCase.getAllCharacters(
+          event.currentPage,
+          event.cancelToken,
+        );
         log("$result");
 
         emit(CharactersLoadedState(charactersResult: result));
@@ -39,19 +42,21 @@ class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
       }
     });
 
-    on<GetAllEpisodsInCharInfo>((event, emit) async {
+    on<GetAllEpisodsCharecterInfo>((event, emit) async {
       try {
-        emit(EpisodsInCharInfoLoadingState());
+        emit(CharacterInfoLoadingState());
 
         List<EpisodModel> episods = [];
 
-        for (int i = 0; i <= event.episode.length - 1; i++) {
-          EpisodModel result =
-              await charactersUseCase.getEpisod(event.episode[i]);
+        for (int i = 0; i <= event.episods.length - 1; i++) {
+          EpisodModel result = await charactersUseCase.getEpisod(
+            event.episods[i],
+            event.cancelToken,
+          );
           episods.add(result);
         }
 
-        emit(EpisodsInCharInfoLoadedState(episodsInCharInfo: episods));
+        emit(CharacterInfoLoadedState(episods: episods));
 
         // CharactersResult result =
         //     await charactersUseCase.getAllCharacters(event.currentPage);
@@ -59,9 +64,9 @@ class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
 
         // emit(CharactersLoadedState(charactersResult: result));
       } catch (e) {
-        print('ошибка EpisodsInCharInfoErrorState $e');
+        print('ошибка CharacterInfoErrorState $e');
         emit(
-          EpisodsInCharInfoErrorState(
+          CharacterInfoErrorState(
             error: CatchException.convertException(e),
           ),
         );

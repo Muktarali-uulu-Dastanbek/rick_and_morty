@@ -19,16 +19,16 @@ class CharactersErrorState extends CharactersState {
   CharactersErrorState({required this.error});
 }
 
-class EpisodsInCharInfoLoadingState extends CharactersState {}
+class CharacterInfoLoadingState extends CharactersState {}
 
-class EpisodsInCharInfoLoadedState extends CharactersState {
-  final List<EpisodModel> episodsInCharInfo;
+class CharacterInfoLoadedState extends CharactersState {
+  final List<EpisodModel> episods;
 
-  EpisodsInCharInfoLoadedState({required this.episodsInCharInfo});
+  CharacterInfoLoadedState({required this.episods});
 }
 
-class EpisodsInCharInfoErrorState extends CharactersState {
+class CharacterInfoErrorState extends CharactersState {
   final CatchException error;
 
-  EpisodsInCharInfoErrorState({required this.error});
+  CharacterInfoErrorState({required this.error});
 }

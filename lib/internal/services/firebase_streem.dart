@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:rick_and_morty/features/authorization/presentation/screens/auth_screen.dart';
@@ -21,10 +23,11 @@ class FirebaseStream extends StatelessWidget {
             ),
           );
         } else if (snapshot.hasData) {
-          if (!snapshot.data!.emailVerified) {
-            return const VerifyEmailScreen();
+          log("${snapshot.hasData}");
+          if (snapshot.data!.emailVerified) {
+            return const BottomNavBarScreen();
           }
-          return const BottomNavBarScreen();
+          return const VerifyEmailScreen();
         } else {
           return const AuthorizationScreen();
         }

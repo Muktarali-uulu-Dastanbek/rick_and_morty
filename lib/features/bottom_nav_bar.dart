@@ -64,18 +64,19 @@ class _BottomNavBarState extends State<BottomNavBarScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: screens.elementAt(selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
+        elevation: 0.0,
+        backgroundColor: Theme.of(context).colorScheme.background,
         // fixedColor: Colors.red,
         type: BottomNavigationBarType.shifting,
         showUnselectedLabels: true,
         // backgroundColor: Colors.blue,
         // iconSize: 24,
         selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.black26,
-        // selectedIconTheme: IconThemeData(
-        //   color: Colors.black,
-        // ),
+        unselectedItemColor: Colors.grey,
+
         // selectedLabelStyle: TextStyle(
         //   fontSize: 10,
         //   fontWeight: FontWeight.bold,
@@ -90,7 +91,7 @@ class _BottomNavBarState extends State<BottomNavBarScreen> {
               color: selectCharacters ? Colors.blue : null,
             ),
             label: 'Персонажи',
-            backgroundColor: Colors.white,
+            // backgroundColor: Colors.white,
           ),
           BottomNavigationBarItem(
             icon: Image.asset(
@@ -100,7 +101,7 @@ class _BottomNavBarState extends State<BottomNavBarScreen> {
               color: selectLocations ? Colors.blue : null,
             ),
             label: 'Локациии',
-            backgroundColor: Colors.white,
+            // backgroundColor: Colors.white,
           ),
           BottomNavigationBarItem(
             icon: Image.asset(
@@ -110,18 +111,19 @@ class _BottomNavBarState extends State<BottomNavBarScreen> {
               color: selectEpisods ? Colors.blue : null,
             ),
             label: 'Эпизоды',
-            backgroundColor: Colors.white,
+            // backgroundColor: Colors.white,
           ),
           const BottomNavigationBarItem(
             icon: Icon(
               Icons.settings,
+              color: Colors.grey,
             ),
             activeIcon: Icon(
               Icons.settings,
               color: Colors.blue,
             ),
             label: 'Настройки',
-            backgroundColor: Colors.white,
+            // backgroundColor: Colors.white,
           ),
         ],
         currentIndex: selectedIndex,

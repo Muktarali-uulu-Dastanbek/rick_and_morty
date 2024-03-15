@@ -13,3 +13,13 @@ class GetAllLocations extends LocationsEvent {
     this.isFirstCall = false,
   });
 }
+
+class GetAllCaharactersLocationInfo extends LocationsEvent {
+  final List<String> characters;
+  final CancelToken? cancelToken;
+
+  GetAllCaharactersLocationInfo({
+    required this.characters,
+    this.cancelToken,
+  });
+}

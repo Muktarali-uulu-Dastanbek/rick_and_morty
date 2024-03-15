@@ -13,11 +13,15 @@ class CharactersRepositoryImpl implements CharactersRepository {
   ApiRequester apiRequester = ApiRequester();
 
   @override
-  Future<CharactersResult> getAllCharacters(int page) async {
+  Future<CharactersResult> getAllCharacters(
+    int page,
+    CancelToken? cancelToken,
+  ) async {
     try {
       Response response = await apiRequester.toGet(
         'api/character',
         params: {"page": page},
+        cancelToken: cancelToken,
       );
       // var dd ='{"info": { "count": 826,"pages": 42,"next": "https://rickandmortyapi.com/api/character?page=2","prev": null}}';
       // log('getAllUsers result == ${response.data}');
@@ -47,14 +51,20 @@ class CharactersRepositoryImpl implements CharactersRepository {
   }
 
   @override
-  Future<EpisodModel> getEpisod(String url) async {
+  Future<EpisodModel> getEpisod(
+    String url,
+    CancelToken? cancelToken,
+  ) async {
     try {
-      Response response = await apiRequester.toGet(url);
+      Response response = await apiRequester.toGet(
+        url,
+        cancelToken: cancelToken,
+      );
       if (response.statusCode == 200) {
         log("${response.statusCode}");
         log("EPISODES result== ${response.data}");
 
-        return EpisodModel.fromJson(response.data, null);
+        return EpisodModel.fromJson(response.data, EpisodsResult.episodsImages);
       }
 
       throw response;

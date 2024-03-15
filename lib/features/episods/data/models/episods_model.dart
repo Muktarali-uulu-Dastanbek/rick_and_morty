@@ -97,11 +97,7 @@ class EpisodModel {
         url: json["url"],
         created:
             json["created"] == null ? null : DateTime.parse(json["created"]),
-        // episodImage: episodsImages![Random().nextInt(6)],
-        //easyloading
-        //smart dialogshow
-        //flutter overlay loading
-        //flutter
+        episodImage: episodsImages![Random().nextInt(6)],
       );
 
   Map<String, dynamic> toJson() => {

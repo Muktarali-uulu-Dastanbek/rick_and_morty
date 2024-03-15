@@ -1,9 +1,12 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rick_and_morty/features/characters/data/models/characters_model.dart';
 import 'package:rick_and_morty/features/characters/presentation/logic/bloc/characters_bloc.dart';
+import 'package:rick_and_morty/features/characters/presentation/widgets/characters_shimmer.dart';
+import 'package:rick_and_morty/features/locations/presentation/screens/locations_screen.dart';
 import 'package:rick_and_morty/internal/dependensies/get_it.dart';
 import 'package:rick_and_morty/internal/helpers/text_helper.dart';
 import 'package:rick_and_morty/internal/helpers/theme_helper.dart';
@@ -19,6 +22,7 @@ class CharactersScreen extends StatefulWidget {
 class _CharactersScreenState extends State<CharactersScreen> {
   CharactersBloc charactersBloc = getIt<CharactersBloc>();
   late ScrollController _scrollController;
+  CancelToken? _cancelToken;
 
   bool isLoading = false;
   int currentPage = 1;
@@ -27,16 +31,24 @@ class _CharactersScreenState extends State<CharactersScreen> {
 
   @override
   void initState() {
+    _cancelToken = CancelToken();
     charactersBloc.add(
       GetAllCharacters(
         currentPage: currentPage,
         isFirstCall: true,
+        cancelToken: _cancelToken,
       ),
     );
     _scrollController = ScrollController(initialScrollOffset: 5.0)
       ..addListener(_scrollListener);
 
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _cancelToken?.cancel("Вышел из экрана Персонажи");
+    super.dispose();
   }
 
   _scrollListener() {
@@ -65,6 +77,7 @@ class _CharactersScreenState extends State<CharactersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
@@ -74,7 +87,7 @@ class _CharactersScreenState extends State<CharactersScreen> {
               autocorrect: false,
               decoration: InputDecoration(
                 filled: true,
-                fillColor: const Color(0xffF2F2F2),
+                fillColor: Theme.of(context).colorScheme.primary,
                 contentPadding: EdgeInsets.symmetric(
                   horizontal: 10.w,
                   vertical: 15.h,
@@ -84,11 +97,14 @@ class _CharactersScreenState extends State<CharactersScreen> {
                   borderRadius: BorderRadius.circular(100.r),
                 ),
                 hintText: 'Найти персонажа',
-                hintStyle: TextHelper.hintText,
-                prefixIcon: const Icon(Icons.search),
+                hintStyle: Theme.of(context).textTheme.bodyMedium,
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
                 suffixIcon: Icon(
                   Icons.filter_list_alt,
-                  color: ThemeColor.hintTextCl,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
             ),
@@ -117,7 +133,7 @@ class _CharactersScreenState extends State<CharactersScreen> {
               },
               builder: (context, state) {
                 if (state is CharactersLoadingState) {
-                  return const CustomSpinner();
+                  return const CharactersShimmer();
                 }
 
                 if (state is CharactersLoadedState) {
@@ -128,7 +144,9 @@ class _CharactersScreenState extends State<CharactersScreen> {
                           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                                "ВСЕГО ПЕРСОНАЖЕЙ: ${state.charactersResult.info?.count}"),
+                              "ВСЕГО ПЕРСОНАЖЕЙ: ${state.charactersResult.info?.count}",
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
                             const Spacer(),
                             IconButton(
                               icon: Icon(
@@ -172,9 +190,8 @@ class _CharactersScreenState extends State<CharactersScreen> {
                                         onTap: () {
                                           Navigator.pushNamed(
                                             context,
-                                            '/character_info',
-                                            arguments: state.charactersResult
-                                                .results?[index],
+                                            '/character_info_screen',
+                                            arguments: charactersList[index],
                                           );
                                         },
                                         child: Container(
@@ -211,13 +228,17 @@ class _CharactersScreenState extends State<CharactersScreen> {
                                               ),
                                               Text(
                                                 "${charactersList[index].name}",
-                                                style: TextHelper.s14w500,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .titleLarge,
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                               Text(
-                                                "${charactersList[index].species.toString().split('.')[1]}, ${charactersList[index].gender.toString().split('.')[1]}",
-                                                style: TextHelper.s12w400,
+                                                "${speciesConverter(charactersList[index].species)}, ${genderConverter(charactersList[index].gender)}",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium,
                                               ),
                                             ],
                                           ),
@@ -238,9 +259,8 @@ class _CharactersScreenState extends State<CharactersScreen> {
                                         onTap: () {
                                           Navigator.pushNamed(
                                             context,
-                                            '/character_info',
-                                            arguments: state.charactersResult
-                                                .results?[index],
+                                            '/character_info_screen',
+                                            arguments: charactersList[index],
                                           );
                                         },
                                         child: Container(
@@ -284,11 +304,15 @@ class _CharactersScreenState extends State<CharactersScreen> {
                                                   ),
                                                   Text(
                                                     "${charactersList[index].name}",
-                                                    style: TextHelper.s14w500,
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .titleLarge,
                                                   ),
                                                   Text(
-                                                    "${charactersList[index].species.toString().split('.')[1]}, ${charactersList[index].gender.toString().split('.')[1]}",
-                                                    style: TextHelper.s12w400,
+                                                    "${speciesConverter(charactersList[index].species)}, ${genderConverter(charactersList[index].gender)}",
+                                                    style: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyMedium,
                                                   ),
                                                 ],
                                               ),
@@ -309,25 +333,6 @@ class _CharactersScreenState extends State<CharactersScreen> {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class CustomSpinner extends StatelessWidget {
-  const CustomSpinner({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 5.h),
-      child:
-          // Platform.isAndroid
-          //     ? const CircularProgressIndicator()
-          //     :
-          CupertinoActivityIndicator(
-        radius: 15.r,
-        color: Colors.grey,
       ),
     );
   }

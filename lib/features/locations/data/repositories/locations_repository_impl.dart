@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:injectable/injectable.dart';
+import 'package:rick_and_morty/features/characters/data/models/characters_model.dart';
 import 'package:rick_and_morty/features/locations/data/models/locations.model.dart';
 import 'package:rick_and_morty/features/locations/domain/repositories/locations_repository.dart';
 import 'package:rick_and_morty/internal/helpers/api_requester.dart';
@@ -23,6 +24,31 @@ class LocationsRepositoriImpl implements LocationsRepository {
         log("LOCATIONS result== ${response.data}");
 
         return LocationsResult.fromJson(response.data);
+      }
+
+      throw response;
+    } catch (e) {
+      print('impl ======= $e');
+
+      throw CatchException.convertException(e);
+    }
+  }
+
+  @override
+  Future<CharacterModel> getCharacter(
+    String url,
+    CancelToken? cancelToken,
+  ) async {
+    try {
+      Response response = await apiRequester.toGet(
+        url,
+        cancelToken: cancelToken,
+      );
+      if (response.statusCode == 200) {
+        log("${response.statusCode}");
+        log("CHARACTER result== ${response.data}");
+
+        return CharacterModel.fromJson(response.data);
       }
 
       throw response;

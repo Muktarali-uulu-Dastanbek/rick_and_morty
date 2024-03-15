@@ -1,7 +1,6 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:rick_and_morty/internal/helpers/text_helper.dart';
 
 class EmailTextFromField extends StatelessWidget {
   const EmailTextFromField({
@@ -14,6 +13,8 @@ class EmailTextFromField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      maxLength: 40,
+      cursorColor: Theme.of(context).colorScheme.primaryContainer,
       keyboardType: TextInputType.emailAddress,
       autocorrect: false,
       controller: emailTextInputController,
@@ -21,8 +22,9 @@ class EmailTextFromField extends StatelessWidget {
           ? 'Введите правильный Email'
           : null,
       decoration: InputDecoration(
+        counterText: "",
         filled: true,
-        fillColor: const Color(0xffF2F2F2),
+        fillColor: Theme.of(context).colorScheme.secondary,
         contentPadding: EdgeInsets.symmetric(
           horizontal: 10.w,
           vertical: 15.h,
@@ -32,8 +34,11 @@ class EmailTextFromField extends StatelessWidget {
           borderRadius: BorderRadius.circular(12.r),
         ),
         hintText: 'Введите Email',
-        hintStyle: TextHelper.hintText,
-        prefixIcon: const Icon(Icons.email),
+        hintStyle: Theme.of(context).textTheme.bodyLarge,
+        prefixIcon: Icon(
+          Icons.email,
+          color: Theme.of(context).colorScheme.primaryContainer,
+        ),
       ),
     );
   }

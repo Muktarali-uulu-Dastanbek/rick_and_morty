@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rick_and_morty/features/locations/data/models/locations.model.dart';
 import 'package:rick_and_morty/features/locations/presentation/logic/bloc/locations_bloc.dart';
+import 'package:rick_and_morty/features/locations/presentation/widgets/locations_shimmer.dart';
 import 'package:rick_and_morty/internal/dependensies/get_it.dart';
 import 'package:rick_and_morty/internal/helpers/text_helper.dart';
 import 'package:rick_and_morty/internal/helpers/theme_helper.dart';
@@ -61,6 +62,7 @@ class _LocationsScreenState extends State<LocationsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 16.w),
         child: Column(
@@ -70,7 +72,7 @@ class _LocationsScreenState extends State<LocationsScreen> {
               autocorrect: false,
               decoration: InputDecoration(
                 filled: true,
-                fillColor: const Color(0xffF2F2F2),
+                fillColor: Theme.of(context).colorScheme.primary,
                 contentPadding: EdgeInsets.symmetric(
                   horizontal: 10.w,
                   vertical: 15.h,
@@ -80,11 +82,14 @@ class _LocationsScreenState extends State<LocationsScreen> {
                   borderRadius: BorderRadius.circular(100.r),
                 ),
                 hintText: 'Найти локацию',
-                hintStyle: TextHelper.hintText,
-                prefixIcon: const Icon(Icons.search),
+                hintStyle: Theme.of(context).textTheme.bodyMedium,
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
                 suffixIcon: Icon(
                   Icons.filter_list_alt,
-                  color: ThemeColor.hintTextCl,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
               ),
             ),
@@ -113,20 +118,17 @@ class _LocationsScreenState extends State<LocationsScreen> {
               },
               builder: (context, state) {
                 if (state is LocationsLoadingState) {
-                  return const CustomSpinner();
+                  return const LocationsShimmer();
                 }
 
                 if (state is LocationsLoadedState) {
                   return Expanded(
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                                "ВСЕГО ЛОКАЦИЙ: ${state.locationsResult.info?.count}"),
-                            SizedBox(width: 14.w),
-                          ],
+                        Text(
+                          "ВСЕГО ЛОКАЦИЙ: ${state.locationsResult.info?.count}",
+                          style: Theme.of(context).textTheme.bodyLarge,
                         ),
                         SizedBox(height: 20.h),
                         Expanded(
@@ -145,13 +147,12 @@ class _LocationsScreenState extends State<LocationsScreen> {
                                   onTap: () {
                                     Navigator.pushNamed(
                                       context,
-                                      '/location_info',
-                                      arguments:
-                                          state.locationsResult.results?[index],
+                                      '/location_info_screen',
+                                      arguments: locationsList[index],
                                     );
                                   },
                                   child: Container(
-                                    margin: EdgeInsets.all(5.r),
+                                    margin: EdgeInsets.symmetric(vertical: 5.r),
                                     child: Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -165,7 +166,9 @@ class _LocationsScreenState extends State<LocationsScreen> {
                                               topRight: Radius.circular(10.r),
                                             ),
                                             border: Border.all(
-                                              color: Colors.grey,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .secondary,
                                               width: 1,
                                             ),
                                           ),
@@ -176,7 +179,7 @@ class _LocationsScreenState extends State<LocationsScreen> {
                                             ),
                                             child: Image.asset(
                                               "${locationsList[index].locationImage}",
-                                              fit: BoxFit.fill,
+                                              fit: BoxFit.cover,
                                             ),
                                           ),
                                         ),
@@ -184,13 +187,18 @@ class _LocationsScreenState extends State<LocationsScreen> {
                                           width: double.infinity,
                                           height: 80.h,
                                           decoration: BoxDecoration(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary,
                                             borderRadius: BorderRadius.only(
                                               bottomLeft: Radius.circular(10.r),
                                               bottomRight:
                                                   Radius.circular(10.r),
                                             ),
                                             border: Border.all(
-                                              color: Colors.grey,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .secondary,
                                               width: 1,
                                             ),
                                           ),
@@ -202,14 +210,18 @@ class _LocationsScreenState extends State<LocationsScreen> {
                                               children: [
                                                 Text(
                                                   "${locationsList[index].name}",
-                                                  style: TextHelper.s24w600,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .headlineMedium,
                                                   maxLines: 1,
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                 ),
                                                 Text(
                                                   "${locationsList[index].type} - ${locationsList[index].dimension}",
-                                                  style: TextHelper.s12w400,
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyMedium,
                                                 ),
                                               ],
                                             ),

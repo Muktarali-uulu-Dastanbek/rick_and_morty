@@ -3,9 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rick_and_morty/features/authorization/presentation/screens/verify_email_screen.dart';
-import 'package:rick_and_morty/features/characters/presentation/widget/email_input_widget.dart';
+import 'package:rick_and_morty/features/authorization/presentation/widget/email_input_widget.dart';
 import 'package:rick_and_morty/internal/helpers/catch_exception.dart';
-import 'package:rick_and_morty/internal/helpers/text_helper.dart';
 
 class AuthorizationScreen extends StatefulWidget {
   const AuthorizationScreen({Key? key}) : super(key: key);
@@ -47,7 +46,7 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
       );
 
       if (FirebaseAuth.instance.currentUser != null) {
-        if (!FirebaseAuth.instance.currentUser!.emailVerified) {
+        if (FirebaseAuth.instance.currentUser!.emailVerified) {
           navigator.push(MaterialPageRoute(
               builder: (context) => const VerifyEmailScreen()));
         } else {
@@ -85,14 +84,14 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
                     decoration: const BoxDecoration(
                       image: DecorationImage(
                         image: AssetImage(
-                          "assets/images/Rick_and_Morty.png",
+                          "assets/images/splash_screen/Rick_and_Morty.png",
                         ),
                       ),
                     ),
                   ),
                   Text(
                     "Логин",
-                    style: TextHelper.w600s14,
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   SizedBox(height: 8.h),
                   EmailTextFromField(
@@ -101,10 +100,12 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
                   SizedBox(height: 10.h),
                   Text(
                     "Пароль",
-                    style: TextHelper.w600s14,
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
                   SizedBox(height: 8.h),
                   TextFormField(
+                    maxLength: 16,
+                    cursorColor: Theme.of(context).colorScheme.primaryContainer,
                     autocorrect: false,
                     controller: passwordTextInputController,
                     obscureText: isHiddenPassword,
@@ -113,8 +114,9 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
                         : null,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     decoration: InputDecoration(
+                      counterText: "",
                       filled: true,
-                      fillColor: const Color(0xffF2F2F2),
+                      fillColor: Theme.of(context).colorScheme.secondary,
                       contentPadding: EdgeInsets.symmetric(
                         horizontal: 10.w,
                         vertical: 15.h,
@@ -124,14 +126,18 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
                         borderRadius: BorderRadius.circular(12.r),
                       ),
                       hintText: 'Введите пароль',
-                      prefixIcon: const Icon(Icons.password),
+                      hintStyle: Theme.of(context).textTheme.bodyLarge,
+                      prefixIcon: Icon(
+                        Icons.password,
+                        color: Theme.of(context).colorScheme.primaryContainer,
+                      ),
                       suffix: InkWell(
                         onTap: togglePasswordView,
                         child: Icon(
                           isHiddenPassword
                               ? Icons.visibility_off
                               : Icons.visibility,
-                          color: Colors.black,
+                          color: Theme.of(context).colorScheme.primaryContainer,
                         ),
                       ),
                     ),
@@ -153,7 +159,10 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
                     child: Center(
                       child: Text(
                         'Войти',
-                        style: TextHelper.btnText,
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
@@ -161,18 +170,17 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
+                      Text(
                         "У вас еще нет аккаунта?",
-                        style: TextStyle(
-                          color: Color(0xff5B6975),
-                        ),
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       TextButton(
                         onPressed: () =>
                             Navigator.of(context).pushNamed('/signup'),
-                        child: const Text(
+                        child: Text(
                           'Создать',
                           style: TextStyle(
+                            fontSize: 13.sp,
                             color: Color(0xff43D049),
                           ),
                         ),
